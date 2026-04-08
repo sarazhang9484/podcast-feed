@@ -34,6 +34,22 @@
     .show-label { font-size: 13px; color: #999; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 10px; }
     h1 { font-size: 28px; font-weight: 700; line-height: 1.3; margin-bottom: 12px; }
     .meta { font-size: 14px; color: #888; }
+    .share-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 16px; padding: 8px 16px; border-radius: 20px;
+      background: #f0ede6; border: none; cursor: pointer;
+      font-size: 14px; color: #555; transition: background 0.15s;
+    }
+    .share-btn:hover { background: #e8e4db; }
+    .share-btn svg { width: 15px; height: 15px; fill: currentColor; }
+    .share-toast {
+      position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+      background: #1a1a1a; color: #fff; padding: 10px 20px; border-radius: 20px;
+      font-size: 14px; opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 200;
+    }
+    .share-toast.show { opacity: 1; }
+    .back-link { font-size: 13px; color: #aaa; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 20px; }
+    .back-link:hover { color: #666; }
 
     .transcript { display: flex; flex-direction: column; gap: 4px; }
     .line {
@@ -54,50 +70,70 @@
 </head>
 <body>
 
+<div class="share-toast" id="toast">链接已复制</div>
+
 <div class="container">
   <div class="header">
+    <a class="back-link" href="index.html">← 所有集数</a>
     <div class="show-label">百年孤独 · 播客</div>
     <h1>马孔多的诞生与消亡</h1>
-    <div class="meta">2026年4月9日 &nbsp;·&nbsp; 6分53秒</div>
+    <div class="meta">2026年4月9日 &nbsp;·&nbsp; 4分44秒</div>
+    <button class="share-btn" onclick="shareEpisode()">
+      <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+      分享这一集
+    </button>
   </div>
 
   <div class="transcript" id="transcript">
-    <div class="line" data-index="0"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">好，今天我们来聊一本书——《百年孤独》。加西亚·马尔克斯写的，很多人都听说过，但真正读完的可能没那么多。</span></div>
-    <div class="line" data-index="1"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">对，因为第一章就能把人搞晕。有好几个角色都叫何塞·阿尔卡蒂奥，还有好几个叫奥雷里亚诺，感觉作者是故意在刁难读者。</span></div>
-    <div class="line" data-index="2"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">哈哈，没错，这几乎是每个读者的共同体验。那我们先从基本问题说起——这本书到底讲了什么？</span></div>
-    <div class="line" data-index="3"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">简单说，它讲了一个叫布恩迪亚的家族，七代人，生活在一个叫马孔多的小镇上。这个小镇从无到有，慢慢被外部世界渗透，经历战争、殖民、香蕉公司的入侵，最后整个消失。一个大起大落的故事。</span></div>
-    <div class="line" data-index="4"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">然后就是大家都在说的魔幻现实主义。这个词我听了很多次，但感觉很难真正说清楚它是什么意思。</span></div>
-    <div class="line" data-index="5"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">我举个书里的例子——有个女人在折叠衣服的时候，就这么升上天了。邻居们在旁边看着她慢慢飘走，然后转身回家继续过日子。没有人觉得这有什么特别的。</span></div>
-    <div class="line" data-index="6"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">对，魔法不是被当作奇迹来处理的，而是完全平常的事情。这个叙事腔调很特别。</span></div>
-    <div class="line" data-index="7"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">马尔克斯说这种风格来自他的外婆。外婆讲故事，无论多离奇，语气都是平平淡淡的。他就从小被这种腔调熏陶了，后来整本书都是这个感觉。</span></div>
-    <div class="line" data-index="8"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">说说这个家族的创始人吧——何塞·阿尔卡蒂奥·布恩迪亚，他是个很迷人的人物，但也挺可怕的。</span></div>
-    <div class="line" data-index="9"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">他是个痴迷者。带着妻子乌苏拉和一群人翻越丛林，就因为他梦见了一座镜子做的城市。他们最后找到了那片地方，给它取名叫马孔多。</span></div>
-    <div class="line" data-index="10"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">镜子做的城市——这个意象很有意思，因为后来的马孔多本身就像一面镜子，折射出那个时代的命运。</span></div>
-    <div class="line" data-index="11"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">还有那个预言的设定特别震撼。有个叫梅尔基亚德斯的吉普赛人，他用羊皮纸写下了布恩迪亚家族的全部历史。这家人花了好几代人去破译它，却不知道自己其实在读自己的命运。</span></div>
-    <div class="line" data-index="12"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">然后结尾——最后一个布恩迪亚终于解开了密文，是在什么时候？</span></div>
-    <div class="line" data-index="13"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">就在马孔多被飓风摧毁的那一刻。他一边读着预言，一边看着自己的死亡正在发生。预言写的和眼前发生的是同一件事。那个场面，是我读过的最让人窒息的结局之一。</span></div>
-    <div class="line" data-index="14"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">所以书名才叫《百年孤独》。一百年，一个家族，然后一切消失，什么都没留下。</span></div>
-    <div class="line" data-index="15"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">孤独才是这本书的灵魂。布恩迪亚家族的每一个人，无论身边有多少人，无论经历了多少战争、爱情、孩子、孙辈——本质上都是孤独的。他们无法真正和别人沟通，也逃不出自己的执念。</span></div>
-    <div class="line" data-index="16"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">就像奥雷里亚诺上校。打了三十二场内战，经历了十七次暗杀。有十七个儿子。最后却只是一个人坐在作坊里，做金鱼摆件，做好了融掉，融掉了再做。</span></div>
-    <div class="line" data-index="17"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">一遍又一遍。这个循环让人心碎。他不是在创造什么，只是用这件事来对抗内心的空洞。这个意象是书里最让人难忘的画面之一。</span></div>
-    <div class="line" data-index="18"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">然后是这本书的政治性——我觉得很多人读的时候忽略了这一面。它不只是一个魔幻家族故事，它对殖民主义和拉丁美洲历史有很犀利的批判。</span></div>
-    <div class="line" data-index="19"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">没错。书里那家香蕉公司——其实就是美国联合果品公司——来了之后控制了整个马孔多，给工人们营造出一个假天堂。然后工人罢工，发生了大屠杀。之后政府直接否认这件事，所有人都否认，幸存者找不到任何人承认那曾经发生过。</span></div>
-    <div class="line" data-index="20"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">这是真实事件改编的——1928年哥伦比亚的香蕉大屠杀。马尔克斯出生的前一年刚发生。他的家人就生活在那个年代。</span></div>
-    <div class="line" data-index="21"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">而且他处理这段历史的方式——官方叙事直接把屠杀抹掉——这不是魔幻，这是现实。权力本来就是这样运作的。</span></div>
-    <div class="line" data-index="22"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">我想聊聊乌苏拉，因为我觉得她被严重低估了。她才是整本书的脊梁。</span></div>
-    <div class="line" data-index="23"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">她活了一百多岁。眼睁睁看着一代又一代的家人以同样的方式毁掉自己，每次都看出来了，但就是拦不住。她是家族的记忆，不停地重建房子，喂饱所有人，把一切撑起来。</span></div>
-    <div class="line" data-index="24"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">书里的男人们都痴迷于宏大的执念——战争、炼金术、科学、女人——而乌苏拉在做的，是让所有人活下去这件实际的事。</span></div>
-    <div class="line" data-index="25"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">书里有个很动人的时刻，晚年的乌苏拉几乎失明了，她突然明白了一件事：时间是循环的。所有的奥雷里亚诺是同一种人，所有的何塞·阿尔卡蒂奥是另一种人，他们注定会重复同样的错误。她比任何人都早想清楚了这一点。</span></div>
-    <div class="line" data-index="26"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">时间的循环感是这本书最核心的东西。读起来不像历史在往前走，而是在打转。</span></div>
-    <div class="line" data-index="27"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">马尔克斯深受福克纳影响——那种南方哥特式的感觉：过去不会死，甚至还没有过去。马孔多里，死者会回来。何塞·阿尔卡蒂奥·布恩迪亚被绑在栗子树上发疯，死后他的鬼魂还在那里徘徊。</span></div>
-    <div class="line" data-index="28"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">栗子树那个场景太奇怪也太悲伤了。没人知道怎么处理他，就把他绑在院子里的树上，他开始说拉丁文，后来死了，大家知道他死了，是因为黄色的花从树上落下来。</span></div>
-    <div class="line" data-index="29"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">马尔克斯有一种天赋，就是在一个平凡的细节里，突然打开一个巨大的空间。黄色的花就这样落下来，那么安静，那么让人心碎。</span></div>
-    <div class="line" data-index="30"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">那最后说说——为什么这本书值得读？对一个从没读过的人，你会怎么推荐？</span></div>
-    <div class="line" data-index="31"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">我觉得它是我读过的对一个家族描绘最完整的作品。爱、执念、孤独，如何在一代代人之间传递，而每个人都没有意识到。它不只是哥伦比亚或拉丁美洲的故事，每个家族里都有自己的奥雷里亚诺和自己的何塞·阿尔卡蒂奥。</span></div>
-    <div class="line" data-index="32"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">而且书里有一种奇怪的安慰感，哪怕它是个悲剧。那种孤独感，马尔克斯没有假装它有解药，他只是说，这就是人的处境。</span></div>
-    <div class="line" data-index="33"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">最后那句话——这个家族，以及他们创造的一切，在这片土地上永远不会有第二次机会。读完之后不像是一个诅咒，更像是……好吧，就是这样。它发生过，它是真实的。</span></div>
-    <div class="line" data-index="34"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">《百年孤独》。没读过的赶紧去读。读过的，可以再读一遍——我保证每隔几年你都能从里面发现新的东西。</span></div>
-    <div class="line" data-index="35"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">绝对是一本越老越能读出味道的书。好，今天就聊到这里，谢谢大家收听。</span></div>
+    <div class="line" data-index="0"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">好，今天我们来聊一本书。《百年孤独》。</span></div>
+    <div class="line" data-index="1"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">哦，这个——我就想问，你当时读完了吗？</span></div>
+    <div class="line" data-index="2"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">读完了，但第一遍读的时候有点懵。因为那个人名……</span></div>
+    <div class="line" data-index="3"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">对对对！好几个何塞·阿尔卡蒂奥，又好几个奥雷里亚诺，我一度以为自己在看同一个人。</span></div>
+    <div class="line" data-index="4"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">感觉马尔克斯是故意的，就是要让你晕。我后来在网上找了一张家谱图才搞清楚。</span></div>
+    <div class="line" data-index="5"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">哈，那个家谱图救了很多人的命。那你给没读过的人说说，这本书到底在讲什么？</span></div>
+    <div class="line" data-index="6"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">嗯……怎么说呢，它讲了一个家族，布恩迪亚家族，七代人，在一个叫马孔多的小镇上生活了一百年。</span></div>
+    <div class="line" data-index="7"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">这个镇子一开始是他们自己建的，对吧？</span></div>
+    <div class="line" data-index="8"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">对，创始人何塞·阿尔卡蒂奥·布恩迪亚，带着老婆乌苏拉还有一群人，翻越丛林，就因为他做了个梦——梦见一座镜子做的城市。</span></div>
+    <div class="line" data-index="9"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">镜子做的城市……这意象就已经很奇怪了。</span></div>
+    <div class="line" data-index="10"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">是吧，而且你后来会发现马孔多本身就变成了那面镜子，把整个拉丁美洲的历史都照了一遍。</span></div>
+    <div class="line" data-index="11"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">说到这个，魔幻现实主义这个词大家都听过，但我觉得很多人其实不太知道它具体是什么感觉。</span></div>
+    <div class="line" data-index="12"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">我来举个书里的例子。书里有个人物叫美人儿雷梅黛丝，她在折叠床单的时候，就这么……飘起来了，升天了。</span></div>
+    <div class="line" data-index="13"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">等等，就字面意义的升天？</span></div>
+    <div class="line" data-index="14"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">字面意义的。邻居们在旁边看着她飘走，然后就回去干自己的事了。没有人觉得这有什么大不了的。</span></div>
+    <div class="line" data-index="15"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">这就是那种感觉——魔幻的事情发生了，但整个叙事完全不停顿，不惊叹，就这么过去了。</span></div>
+    <div class="line" data-index="16"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">马尔克斯自己说，这种腔调来自他外婆。外婆跟他讲鬼故事，语气就像在说今天买了什么菜一样平淡。</span></div>
+    <div class="line" data-index="17"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">哈，这个细节太有意思了。那整本书其实就是这种腔调写下来的。</span></div>
+    <div class="line" data-index="18"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">对。然后还有个很核心的设定——预言。有个吉普赛人叫梅尔基亚德斯，他把布恩迪亚家族一百年的历史全部写在了羊皮纸上，用密文。</span></div>
+    <div class="line" data-index="19"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">就是说，所有人的命运早就被写好了？</span></div>
+    <div class="line" data-index="20"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">而且这家人花了好几代人去破译它，却完全不知道自己其实在读自己的结局。</span></div>
+    <div class="line" data-index="21"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">这个……有点毛骨悚然。</span></div>
+    <div class="line" data-index="22"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">最后一个布恩迪亚终于解开了密文，是在马孔多被飓风摧毁的那一刻。他一边读，一边看着预言里的事情正在眼前发生。</span></div>
+    <div class="line" data-index="23"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">就是说他在读自己的死亡？</span></div>
+    <div class="line" data-index="24"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">读自己的死亡，读这个家族的消亡，读这一切的终结。然后飓风把马孔多从地球上抹掉了。</span></div>
+    <div class="line" data-index="25"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">好，这个结局……我觉得我现在有点理解书名了。一百年，然后什么都没了。</span></div>
+    <div class="line" data-index="26"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">而且「孤独」这两个字，贯穿每一个人物。这家人无论活得多热闹，本质上都是孤独的，没有人能真正走进另一个人的内心。</span></div>
+    <div class="line" data-index="27"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">奥雷里亚诺上校就是最典型的例子吧？</span></div>
+    <div class="line" data-index="28"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">对，他打了三十二场内战，活下来了。被暗杀了十七次，还是活下来了。有十七个私生子。然后最后几十年，每天就在作坊里做金鱼摆件。</span></div>
+    <div class="line" data-index="29"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">做金鱼摆件？</span></div>
+    <div class="line" data-index="30"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">做完了融掉，融掉了再做，就这么循环。他不是在创造什么，就是……用这个动作来填满时间，填满那个空洞。</span></div>
+    <div class="line" data-index="31"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">这个意象真的很残忍。一个打过无数仗的人，最后用这种方式度过余生。</span></div>
+    <div class="line" data-index="32"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">我觉得马尔克斯想说的是，这种孤独不是可以被治愈的，它就是人的底色。</span></div>
+    <div class="line" data-index="33"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">那乌苏拉呢？她活了一百多岁，她算孤独吗？</span></div>
+    <div class="line" data-index="34"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">她其实是整本书里我最喜欢的人物。她眼睁睁看着每一代人重复同样的错误，每次都看出来了，但拦不住。</span></div>
+    <div class="line" data-index="35"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">那不是更孤独吗——你看透了，但没有人听你的。</span></div>
+    <div class="line" data-index="36"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">对。书里有一段写她晚年几乎失明，她突然想通了一件事：时间是循环的。所有的奥雷里亚诺都是一种人，所有的何塞·阿尔卡蒂奥都是另一种人，命运早就定好了。</span></div>
+    <div class="line" data-index="37"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">所以那张家谱图其实不只是帮读者分清人物，它本身就是这本书的结构——循环，重复。</span></div>
+    <div class="line" data-index="38"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">说得好，我没这么想过。然后还有一条线很多人会忽略，就是书里的政治。</span></div>
+    <div class="line" data-index="39"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">香蕉公司那段？</span></div>
+    <div class="line" data-index="40"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">对，一家外来的香蕉公司进驻马孔多，其实影射的是真实的美国联合果品公司。工人罢工，然后发生了大屠杀。之后政府直接宣布这件事从来没发生过。</span></div>
+    <div class="line" data-index="41"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">幸存者说出来也没人信。</span></div>
+    <div class="line" data-index="42"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">这是1928年哥伦比亚真实发生过的事。马尔克斯的家人就生活在那个年代。他把它写进书里，但包在魔幻的外壳里。</span></div>
+    <div class="line" data-index="43"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">但权力抹掉历史这件事，本身就不需要魔幻来解释，它就是现实。</span></div>
+    <div class="line" data-index="44"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">说得对。好，最后，为什么值得读？一句话。</span></div>
+    <div class="line" data-index="45"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">因为……你会在书里看到自己的家族。那种代际之间说不清楚的东西，那种传下来的执念和孤独，读完之后会有点后劲。</span></div>
+    <div class="line" data-index="46"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">而且它不会假装有答案，不会说孤独是可以被克服的，它只是如实地把它呈现出来。某种程度上反而让人觉得，还好，不只是我这样。</span></div>
+    <div class="line" data-index="47"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">对。好，今天就聊到这里，谢谢大家收听。</span></div>
+    <div class="line" data-index="48"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">下次见。</span></div>
   </div>
 </div>
 
@@ -115,7 +151,7 @@
       <span id="totalTime">6:53</span>
     </div>
   </div>
-  <audio id="audio" src="episodes/2026-04-09-004151.mp3" preload="metadata"></audio>
+  <audio id="audio" src="episodes/2026-04-09-005849.mp3" preload="metadata"></audio>
 </div>
 
 <script>
@@ -128,8 +164,8 @@ const totalTimeEl = document.getElementById('totalTime');
 const lines = document.querySelectorAll('.line');
 
 // Approximate segment timings (seconds) based on 6m53s total / 36 segments
-const segmentDuration = 413 / 36;
-const timings = Array.from({length: 36}, (_, i) => i * segmentDuration);
+const segmentDuration = 284 / 49;
+const timings = Array.from({length: 49}, (_, i) => i * segmentDuration);
 
 function fmt(s) {
   const m = Math.floor(s / 60), sec = Math.floor(s % 60);
@@ -175,6 +211,19 @@ function seek(e) {
   const rect = document.getElementById('progressTrack').getBoundingClientRect();
   const pct = (e.clientX - rect.left) / rect.width;
   audio.currentTime = pct * audio.duration;
+}
+
+function shareEpisode() {
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: '百年孤独 — 马孔多的诞生与消亡', url });
+  } else {
+    navigator.clipboard.writeText(url).then(() => {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    });
+  }
 }
 
 // Click line to jump to that segment

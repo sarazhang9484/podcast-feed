@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>百年孤独 · 播客</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", sans-serif; background: #faf9f6; color: #2d2d2d; }
+    .container { max-width: 680px; margin: 0 auto; padding: 48px 24px 64px; }
+
+    .hero { margin-bottom: 48px; }
+    .show-title { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+    .show-desc { font-size: 15px; color: #777; line-height: 1.6; margin-bottom: 20px; }
+    .rss-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 16px; background: #f0ede6;
+      font-size: 13px; color: #666; text-decoration: none; transition: background 0.15s;
+    }
+    .rss-link:hover { background: #e8e4db; }
+    .rss-link svg { width: 14px; height: 14px; fill: #e8623a; }
+
+    .section-title { font-size: 13px; font-weight: 600; color: #aaa; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 16px; }
+
+    .episode-list { display: flex; flex-direction: column; gap: 2px; }
+    .episode-card {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px; border-radius: 12px; cursor: pointer;
+      text-decoration: none; color: inherit; transition: background 0.15s;
+    }
+    .episode-card:hover { background: #f0ede6; }
+    .ep-num {
+      font-size: 13px; color: #bbb; font-weight: 600;
+      width: 28px; text-align: center; flex-shrink: 0;
+    }
+    .ep-info { flex: 1; min-width: 0; }
+    .ep-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ep-meta { font-size: 13px; color: #999; }
+    .ep-share {
+      padding: 7px; border-radius: 8px; background: transparent;
+      border: none; cursor: pointer; color: #bbb; transition: color 0.15s, background 0.15s;
+      flex-shrink: 0;
+    }
+    .ep-share:hover { color: #555; background: #e8e4db; }
+    .ep-share svg { width: 16px; height: 16px; fill: currentColor; display: block; }
+
+    .share-toast {
+      position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+      background: #1a1a1a; color: #fff; padding: 10px 20px; border-radius: 20px;
+      font-size: 14px; opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 200;
+    }
+    .share-toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<div class="share-toast" id="toast">链接已复制</div>
+
+<div class="container">
+  <div class="hero">
+    <div class="show-title">百年孤独</div>
+    <div class="show-desc">用播客的方式重新听懂百年孤独</div>
+    <a class="rss-link" href="feed.xml">
+      <svg viewBox="0 0 24 24"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19.01 7.38 20 6.18 20C4.98 20 4 19.01 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/></svg>
+      RSS 订阅
+    </a>
+  </div>
+
+  <div class="section-title">全部集数</div>
+  <div class="episode-list" id="episodeList">
+    <div style="color:#bbb;font-size:14px;padding:16px">加载中……</div>
+  </div>
+</div>
+
+<script>
+const BASE = 'https://sarazhang9484.github.io/podcast-feed';
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function shareEp(e, url, title) {
+  e.preventDefault(); e.stopPropagation();
+  const full = BASE + '/' + url;
+  if (navigator.share) {
+    navigator.share({ title, url: full });
+  } else {
+    navigator.clipboard.writeText(full).then(showToast);
+  }
+}
+
+fetch('episodes.json?t=' + Date.now())
+  .then(r => r.json())
+  .then(episodes => {
+    const list = document.getElementById('episodeList');
+    if (!episodes.length) { list.innerHTML = '<div style="color:#bbb;font-size:14px;padding:16px">暂无集数</div>'; return; }
+    list.innerHTML = episodes.map((ep, i) => {
+      const pageUrl = ep.page_url ? ep.page_url.replace(BASE + '/', '') : null;
+      const href = pageUrl || '#';
+      const date = new Date(ep.pub_date).toLocaleDateString('zh-CN', {year:'numeric', month:'long', day:'numeric'});
+      return `
+        <a class="episode-card" href="${href}">
+          <div class="ep-num">${episodes.length - i}</div>
+          <div class="ep-info">
+            <div class="ep-title">${ep.title}</div>
+            <div class="ep-meta">${date} · ${ep.duration}</div>
+          </div>
+          ${pageUrl ? `
+          <button class="ep-share" onclick="shareEp(event, '${pageUrl}', '${ep.title.replace(/'/g,"\\'")}')">
+            <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+          </button>` : ''}
+        </a>`;
+    }).join('');
+  })
+  .catch(() => {
+    document.getElementById('episodeList').innerHTML = '<div style="color:#bbb;font-size:14px;padding:16px">加载失败</div>';
+  });
+</script>
+</body>
+</html>
