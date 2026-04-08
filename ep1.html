@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>百年孤独 — 马孔多的诞生与消亡</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", sans-serif; background: #faf9f6; color: #2d2d2d; }
+
+    .player-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #1a1a1a; padding: 14px 20px;
+      display: flex; align-items: center; gap: 14px;
+      box-shadow: 0 -2px 20px rgba(0,0,0,0.3); z-index: 100;
+    }
+    .play-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: #e8b86d; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: transform 0.1s;
+    }
+    .play-btn:hover { transform: scale(1.05); }
+    .play-btn svg { width: 18px; height: 18px; fill: #1a1a1a; }
+    .progress-wrap { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .progress-track { width: 100%; height: 4px; background: #444; border-radius: 2px; cursor: pointer; position: relative; }
+    .progress-fill { height: 100%; background: #e8b86d; border-radius: 2px; width: 0%; transition: width 0.3s linear; pointer-events: none; }
+    .time-row { display: flex; justify-content: space-between; }
+    .time-row span { color: #999; font-size: 12px; font-variant-numeric: tabular-nums; }
+    audio { display: none; }
+
+    .container { max-width: 680px; margin: 0 auto; padding: 48px 24px 120px; }
+    .header { margin-bottom: 40px; }
+    .show-label { font-size: 13px; color: #999; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 10px; }
+    h1 { font-size: 28px; font-weight: 700; line-height: 1.3; margin-bottom: 12px; }
+    .meta { font-size: 14px; color: #888; }
+
+    .transcript { display: flex; flex-direction: column; gap: 4px; }
+    .line {
+      display: flex; gap: 14px; padding: 10px 14px; border-radius: 10px;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .line:hover { background: #f0ede6; }
+    .line.active { background: #fdf3e0; }
+    .speaker-tag {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+      padding: 2px 8px; border-radius: 4px; height: fit-content;
+      margin-top: 2px; flex-shrink: 0; min-width: 40px; text-align: center;
+    }
+    .speaker-a { background: #e8b86d22; color: #b8882d; }
+    .speaker-b { background: #6d9ee822; color: #3a6fb8; }
+    .line-text { font-size: 16px; line-height: 1.75; color: #2d2d2d; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="show-label">百年孤独 · 播客</div>
+    <h1>马孔多的诞生与消亡</h1>
+    <div class="meta">2026年4月9日 &nbsp;·&nbsp; 6分53秒</div>
+  </div>
+
+  <div class="transcript" id="transcript">
+    <div class="line" data-index="0"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">好，今天我们来聊一本书——《百年孤独》。加西亚·马尔克斯写的，很多人都听说过，但真正读完的可能没那么多。</span></div>
+    <div class="line" data-index="1"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">对，因为第一章就能把人搞晕。有好几个角色都叫何塞·阿尔卡蒂奥，还有好几个叫奥雷里亚诺，感觉作者是故意在刁难读者。</span></div>
+    <div class="line" data-index="2"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">哈哈，没错，这几乎是每个读者的共同体验。那我们先从基本问题说起——这本书到底讲了什么？</span></div>
+    <div class="line" data-index="3"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">简单说，它讲了一个叫布恩迪亚的家族，七代人，生活在一个叫马孔多的小镇上。这个小镇从无到有，慢慢被外部世界渗透，经历战争、殖民、香蕉公司的入侵，最后整个消失。一个大起大落的故事。</span></div>
+    <div class="line" data-index="4"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">然后就是大家都在说的魔幻现实主义。这个词我听了很多次，但感觉很难真正说清楚它是什么意思。</span></div>
+    <div class="line" data-index="5"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">我举个书里的例子——有个女人在折叠衣服的时候，就这么升上天了。邻居们在旁边看着她慢慢飘走，然后转身回家继续过日子。没有人觉得这有什么特别的。</span></div>
+    <div class="line" data-index="6"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">对，魔法不是被当作奇迹来处理的，而是完全平常的事情。这个叙事腔调很特别。</span></div>
+    <div class="line" data-index="7"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">马尔克斯说这种风格来自他的外婆。外婆讲故事，无论多离奇，语气都是平平淡淡的。他就从小被这种腔调熏陶了，后来整本书都是这个感觉。</span></div>
+    <div class="line" data-index="8"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">说说这个家族的创始人吧——何塞·阿尔卡蒂奥·布恩迪亚，他是个很迷人的人物，但也挺可怕的。</span></div>
+    <div class="line" data-index="9"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">他是个痴迷者。带着妻子乌苏拉和一群人翻越丛林，就因为他梦见了一座镜子做的城市。他们最后找到了那片地方，给它取名叫马孔多。</span></div>
+    <div class="line" data-index="10"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">镜子做的城市——这个意象很有意思，因为后来的马孔多本身就像一面镜子，折射出那个时代的命运。</span></div>
+    <div class="line" data-index="11"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">还有那个预言的设定特别震撼。有个叫梅尔基亚德斯的吉普赛人，他用羊皮纸写下了布恩迪亚家族的全部历史。这家人花了好几代人去破译它，却不知道自己其实在读自己的命运。</span></div>
+    <div class="line" data-index="12"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">然后结尾——最后一个布恩迪亚终于解开了密文，是在什么时候？</span></div>
+    <div class="line" data-index="13"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">就在马孔多被飓风摧毁的那一刻。他一边读着预言，一边看着自己的死亡正在发生。预言写的和眼前发生的是同一件事。那个场面，是我读过的最让人窒息的结局之一。</span></div>
+    <div class="line" data-index="14"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">所以书名才叫《百年孤独》。一百年，一个家族，然后一切消失，什么都没留下。</span></div>
+    <div class="line" data-index="15"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">孤独才是这本书的灵魂。布恩迪亚家族的每一个人，无论身边有多少人，无论经历了多少战争、爱情、孩子、孙辈——本质上都是孤独的。他们无法真正和别人沟通，也逃不出自己的执念。</span></div>
+    <div class="line" data-index="16"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">就像奥雷里亚诺上校。打了三十二场内战，经历了十七次暗杀。有十七个儿子。最后却只是一个人坐在作坊里，做金鱼摆件，做好了融掉，融掉了再做。</span></div>
+    <div class="line" data-index="17"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">一遍又一遍。这个循环让人心碎。他不是在创造什么，只是用这件事来对抗内心的空洞。这个意象是书里最让人难忘的画面之一。</span></div>
+    <div class="line" data-index="18"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">然后是这本书的政治性——我觉得很多人读的时候忽略了这一面。它不只是一个魔幻家族故事，它对殖民主义和拉丁美洲历史有很犀利的批判。</span></div>
+    <div class="line" data-index="19"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">没错。书里那家香蕉公司——其实就是美国联合果品公司——来了之后控制了整个马孔多，给工人们营造出一个假天堂。然后工人罢工，发生了大屠杀。之后政府直接否认这件事，所有人都否认，幸存者找不到任何人承认那曾经发生过。</span></div>
+    <div class="line" data-index="20"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">这是真实事件改编的——1928年哥伦比亚的香蕉大屠杀。马尔克斯出生的前一年刚发生。他的家人就生活在那个年代。</span></div>
+    <div class="line" data-index="21"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">而且他处理这段历史的方式——官方叙事直接把屠杀抹掉——这不是魔幻，这是现实。权力本来就是这样运作的。</span></div>
+    <div class="line" data-index="22"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">我想聊聊乌苏拉，因为我觉得她被严重低估了。她才是整本书的脊梁。</span></div>
+    <div class="line" data-index="23"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">她活了一百多岁。眼睁睁看着一代又一代的家人以同样的方式毁掉自己，每次都看出来了，但就是拦不住。她是家族的记忆，不停地重建房子，喂饱所有人，把一切撑起来。</span></div>
+    <div class="line" data-index="24"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">书里的男人们都痴迷于宏大的执念——战争、炼金术、科学、女人——而乌苏拉在做的，是让所有人活下去这件实际的事。</span></div>
+    <div class="line" data-index="25"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">书里有个很动人的时刻，晚年的乌苏拉几乎失明了，她突然明白了一件事：时间是循环的。所有的奥雷里亚诺是同一种人，所有的何塞·阿尔卡蒂奥是另一种人，他们注定会重复同样的错误。她比任何人都早想清楚了这一点。</span></div>
+    <div class="line" data-index="26"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">时间的循环感是这本书最核心的东西。读起来不像历史在往前走，而是在打转。</span></div>
+    <div class="line" data-index="27"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">马尔克斯深受福克纳影响——那种南方哥特式的感觉：过去不会死，甚至还没有过去。马孔多里，死者会回来。何塞·阿尔卡蒂奥·布恩迪亚被绑在栗子树上发疯，死后他的鬼魂还在那里徘徊。</span></div>
+    <div class="line" data-index="28"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">栗子树那个场景太奇怪也太悲伤了。没人知道怎么处理他，就把他绑在院子里的树上，他开始说拉丁文，后来死了，大家知道他死了，是因为黄色的花从树上落下来。</span></div>
+    <div class="line" data-index="29"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">马尔克斯有一种天赋，就是在一个平凡的细节里，突然打开一个巨大的空间。黄色的花就这样落下来，那么安静，那么让人心碎。</span></div>
+    <div class="line" data-index="30"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">那最后说说——为什么这本书值得读？对一个从没读过的人，你会怎么推荐？</span></div>
+    <div class="line" data-index="31"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">我觉得它是我读过的对一个家族描绘最完整的作品。爱、执念、孤独，如何在一代代人之间传递，而每个人都没有意识到。它不只是哥伦比亚或拉丁美洲的故事，每个家族里都有自己的奥雷里亚诺和自己的何塞·阿尔卡蒂奥。</span></div>
+    <div class="line" data-index="32"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">而且书里有一种奇怪的安慰感，哪怕它是个悲剧。那种孤独感，马尔克斯没有假装它有解药，他只是说，这就是人的处境。</span></div>
+    <div class="line" data-index="33"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">最后那句话——这个家族，以及他们创造的一切，在这片土地上永远不会有第二次机会。读完之后不像是一个诅咒，更像是……好吧，就是这样。它发生过，它是真实的。</span></div>
+    <div class="line" data-index="34"><span class="speaker-tag speaker-a">Alex</span><span class="line-text">《百年孤独》。没读过的赶紧去读。读过的，可以再读一遍——我保证每隔几年你都能从里面发现新的东西。</span></div>
+    <div class="line" data-index="35"><span class="speaker-tag speaker-b">Sam</span><span class="line-text">绝对是一本越老越能读出味道的书。好，今天就聊到这里，谢谢大家收听。</span></div>
+  </div>
+</div>
+
+<div class="player-bar">
+  <button class="play-btn" id="playBtn" onclick="togglePlay()">
+    <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+  </button>
+  <div class="progress-wrap">
+    <div class="progress-track" id="progressTrack" onclick="seek(event)">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="time-row">
+      <span id="currentTime">0:00</span>
+      <span id="totalTime">6:53</span>
+    </div>
+  </div>
+  <audio id="audio" src="episodes/2026-04-09-004151.mp3" preload="metadata"></audio>
+</div>
+
+<script>
+const audio = document.getElementById('audio');
+const playIcon = document.getElementById('playIcon');
+const pauseIcon = document.getElementById('pauseIcon');
+const fill = document.getElementById('progressFill');
+const currentTimeEl = document.getElementById('currentTime');
+const totalTimeEl = document.getElementById('totalTime');
+const lines = document.querySelectorAll('.line');
+
+// Approximate segment timings (seconds) based on 6m53s total / 36 segments
+const segmentDuration = 413 / 36;
+const timings = Array.from({length: 36}, (_, i) => i * segmentDuration);
+
+function fmt(s) {
+  const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2,'0')}`;
+}
+
+function togglePlay() {
+  if (audio.paused) { audio.play(); playIcon.style.display='none'; pauseIcon.style.display=''; }
+  else { audio.pause(); playIcon.style.display=''; pauseIcon.style.display='none'; }
+}
+
+audio.addEventListener('timeupdate', () => {
+  const pct = audio.duration ? (audio.currentTime / audio.duration * 100) : 0;
+  fill.style.width = pct + '%';
+  currentTimeEl.textContent = fmt(audio.currentTime);
+
+  // Highlight current line
+  let active = 0;
+  for (let i = 0; i < timings.length; i++) {
+    if (audio.currentTime >= timings[i]) active = i;
+  }
+  lines.forEach((l, i) => l.classList.toggle('active', i === active));
+
+  // Auto-scroll to active line
+  const activeLine = lines[active];
+  if (activeLine) {
+    const rect = activeLine.getBoundingClientRect();
+    if (rect.top < 80 || rect.bottom > window.innerHeight - 100) {
+      activeLine.scrollIntoView({behavior: 'smooth', block: 'center'});
+    }
+  }
+});
+
+audio.addEventListener('loadedmetadata', () => {
+  totalTimeEl.textContent = fmt(audio.duration);
+});
+
+audio.addEventListener('ended', () => {
+  playIcon.style.display=''; pauseIcon.style.display='none';
+});
+
+function seek(e) {
+  const rect = document.getElementById('progressTrack').getBoundingClientRect();
+  const pct = (e.clientX - rect.left) / rect.width;
+  audio.currentTime = pct * audio.duration;
+}
+
+// Click line to jump to that segment
+lines.forEach((line, i) => {
+  line.addEventListener('click', () => {
+    audio.currentTime = timings[i];
+    if (audio.paused) audio.play();
+    playIcon.style.display='none'; pauseIcon.style.display='';
+  });
+});
+</script>
+</body>
+</html>
